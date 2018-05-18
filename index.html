@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Adarsh Patel">
+    <title>Mentees List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="header">
+        <div class="head left"><h1>MENTEES LIST</h1></div>
+    </div>
+
+   <div id="formfield">
+        <p>Add A NEW MENTEE</p>
+        <form name="creator">
+          <p>Name:</p>
+          <input type="text" name="username" id="username">
+          <p>Roll Number:</p>
+          <input type="text" name="rollnum" id="rollnum">
+          <p>Department:</p>
+          <input type="text" name="dep" id="dep">
+          <p>Comment:</p>
+          <textarea name="commit" id="textArea" cols="20" rows="7"></textarea>
+          <p>Rating:</p>
+          <p> 1<input type="radio" name="rating" value="1">2<input type="radio" name="rating" value="2">3<input type="radio" name="rating" value="3">4<input type="radio" name="rating" value="4">5<input type="radio" name="rating" value="5"></p>
+          <input type="button" value="submit" id="submit" onclick="newMentee()">
+        </form>
+   </div>
+
+   <div id="menteesbox">
+       <h2><u>CURRENT MENTEES</u></h2>
+     <!--  <input type="button" value="sortTheList" id="listbutton" onclick="sorter()"> -->
+    </div>
+
+   <div id="boxcontainer">
+       <h1>POPUP BOXES</h1>
+   </div>
+
+   <!--SCRIPT-->
+   <script>
+       var form = document.forms[0];
+       var currentmentees = document.getElementById('menteesbox');
+       var container = document.getElementById('boxcontainer');
+       var TextArea =document.getElementById('textArea');
+
+       function newMentee(){
+
+        let newdiv =document.createElement('div');
+        newdiv.className ='popup';
+        var rating = document.querySelector('input[name="rating"]:checked').value;
+        newdiv.id =`${rating}`;
+        var username = form.elements.username.value;
+         let rollno =form.elements.rollnum.value;
+         let branch =form.elements.dep.value;
+         let commenT =TextArea.value;
+
+       //on click popup box appears
+        newdiv.onclick =function() {
+            let i, z;
+            z = document.getElementsByClassName('popupbox');
+            for (i = 0; i < z.length; i++) {
+           z[i].style.display = "none";
+           }
+           document.getElementById(username).style.display = "block";
+            };
+
+         if(rating =='1'){
+           newdiv.style ="background:brown";
+         }
+         else if(rating =='2'){
+            newdiv.style ="background:pink"; 
+         }
+         else if(rating =='3'){
+            newdiv.style ="background:darkseagreen";
+         }
+         else if(rating =='4'){
+            newdiv.style ="background:darkcyan";
+         }
+         else{
+             newdiv.style ="background:darkgreen";
+         }
+         
+        newdiv.innerHTML = `<span> ${username}</span>:<span> ${rating} </span>
+                           <input type="button" value="DELETE" id="deleteThat" onclick="Dlt(event)">`
+                    
+        currentmentees.appendChild(newdiv);
+
+       // a popup element
+        let newBox =document.createElement('div');
+       newBox.className ='popupbox';
+       newBox.id =`${username}`;
+
+       //popup box color
+         if(rating =='1'){
+           newBox.style ="display:none;background:brown";
+         }
+         else if(rating =='2'){
+            newBox.style ="display:none;background:pink"; 
+         }
+         else if(rating =='3'){
+            newBox.style ="display:none;background:darkseagreen";
+         }
+         else if(rating =='4'){
+            newBox.style ="display:none;background:darkcyan";
+         }
+         else{
+             newBox.style ="display:none;background:darkgreen";
+         }
+         
+
+       newBox.innerHTML =` <span onclick="this.parentElement.style.display='none'" class="closebtn">X</span>
+                            <h3> ${username}</h3>
+                            <h4>${rollno} :: ${branch}</h4>
+                            <p id ="newCMNT">${commenT}</p>
+                            <input type="button" value="EDIT" id="edit" onclick="editor(event)">` 
+         container.appendChild(newBox);                   
+   }
+   
+    //editor
+    function editor(event){
+        let newComment = prompt('enter new comment message', 'comment!....');
+        let y = event.target.parentElement;
+        let x = y.children[3];
+         let dflt = x.innerHTML;
+         if( newComment == null || newComment ==''){
+            x.innerHTML = dflt;
+        }
+        else{
+          x.innerHTML =newComment;}
+    }
+
+    //DELETE 
+    function Dlt(event){
+        event.stopPropagation();
+        let y = event.target.parentElement;
+        y.outerHTML = '';
+       
+    }
+    
+   
+   </script>
+
+</body>
+</html>
